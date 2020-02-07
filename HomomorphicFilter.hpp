@@ -13,6 +13,7 @@ public:
 };
 
 class GaussianHighPassFilter: public HighPassFilter {
+public:
     cv::Mat createFilter(int rows, int cols, float sigma, float alpha, float beta) const override;
 };
 
