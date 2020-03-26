@@ -12,7 +12,7 @@ int main(int argc, char** argv) {
     int opt;
     while ((opt = getopt(argc, (char**) argv, ":b:gcr")) != -1) {
         switch (opt) {
-            case 'b': 
+            case 'b':
                 delete hpf;
                 hpf = new hf::ButterworthHighPassFilter(atoi(optarg));
                 break;
@@ -39,14 +39,14 @@ int main(int argc, char** argv) {
     string pathToImage = argv[optind++];
     string pathToOutput = argv[optind];
     cv::Mat bgrImage = cv::imread(pathToImage);
-    cv::Mat image;
-    cv::extractChannel(bgrImage, image, 2);
 
-    if (image.data == nullptr) {
+    if (bgrImage.data == nullptr) {
         cout << "Cannot read image at: " << pathToImage << endl;
         return 2;
     }
 
+    cv::Mat image;
+    cv::cvtColor(bgrImage, image, cv::COLOR_BGR2GRAY);
     cv::Mat dest(image.size(), image.type());
     hf::homomorphicFilter(image, dest, 15.0, 0.5, 2.0, *hpf, borderType);
     cv::imwrite(pathToOutput, dest);

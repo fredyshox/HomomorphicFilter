@@ -21,7 +21,7 @@ struct ProgramData {
     int sliderBeta;
 
     ProgramData(cv::Mat image, int borderType, hf::HighPassFilter* hpf):
-        image(image), 
+        image(image),
         borderType(borderType),
         hpf(hpf)
     {
@@ -67,7 +67,7 @@ int main(int argc, char** argv) {
     int opt;
     while ((opt = getopt(argc, (char**) argv, ":b:gcr")) != -1) {
         switch (opt) {
-            case 'b': 
+            case 'b':
                 delete hpf;
                 hpf = new hf::ButterworthHighPassFilter(atoi(optarg));
                 break;
@@ -93,14 +93,14 @@ int main(int argc, char** argv) {
 
     string pathToImage = argv[optind];
     cv::Mat bgrImage = cv::imread(pathToImage);
-    cv::Mat image;
-    cv::extractChannel(bgrImage, image, 2);
 
-    if (image.data == nullptr) {
+    if (bgrImage.data == nullptr) {
         cout << "Cannot read image at: " << pathToImage << endl;
         return 2;
     }
 
+    cv::Mat image;
+    cv::cvtColor(bgrImage, image, cv::COLOR_BGR2GRAY);
     ProgramData pdata(image, borderType, hpf);
     cv::namedWindow(mainWindow, cv::WINDOW_NORMAL);
     cv::namedWindow(previewWindow, cv::WINDOW_NORMAL);
